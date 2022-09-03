@@ -256,15 +256,39 @@ function addons_url($url = '', $param = [], $suffix = true, $domain = false);
 ```html
 www  WEB部署目录（或者子目录）
 ├─addons           插件目录
-├─app           应用目录
-│  ├─controller      控制器目录
-│  ├─model           模型目录
+│	├─adver			广告管理插件
+│	│  ├─admin      	 后台应用目录
+│	│  │  ├─controller      控制器目录
+│	│  │  ├─model           模型目录
+│	│  │  └─...            更多类库目录
+│	│  │
+│	│  ├─index      前端应用目录
+│	│  │  ├─controller      控制器目录
+│	│  │  └─model           模型目录
+│	│  │
+│	│  ├─ view            视图目录
+│	│  │  ├─admin      		后台视图目录
+│	│  │  └─index           前台视图目录
+│	│  └─ ...            更多类库目录
+│	│
+│	└─ ...		更多插件
+│
+├─app
+│  ├─admin      	 后台应用目录
+│  │  ├─controller      控制器目录
+│  │  ├─model           模型目录
+│  │  └─...            更多类库目录
+│  │
+│  ├─index      前端应用目录
+│  │  ├─controller      控制器目录
+│  │  └─model           模型目录
 │  ├─ ...            更多类库目录
 │  │
 │  ├─common.php         公共函数文件
 │  └─event.php          事件定义文件
 │
 ├─config                配置目录
+│  ├─addons.php			插件配置
 │  ├─app.php            应用配置
 │  ├─cache.php          缓存配置
 │  ├─console.php        控制台配置
