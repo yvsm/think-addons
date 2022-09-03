@@ -256,22 +256,22 @@ function addons_url($url = '', $param = [], $suffix = true, $domain = false);
 ```html
 www  WEB部署目录（或者子目录）
 ├─addons           插件目录
-│	├─adver			广告管理插件
-│	│  ├─admin      	 后台应用目录
-│	│  │  ├─controller      控制器目录
-│	│  │  ├─model           模型目录
-│	│  │  └─...            更多类库目录
-│	│  │
-│	│  ├─index      前端应用目录
-│	│  │  ├─controller      控制器目录
-│	│  │  └─model           模型目录
-│	│  │
-│	│  ├─ view            视图目录
-│	│  │  ├─admin      		后台视图目录
-│	│  │  └─index           前台视图目录
-│	│  └─ ...            更多类库目录
-│	│
-│	└─ ...		更多插件
+│  ├─adver			广告管理插件
+│  │  ├─admin      	 后台应用目录
+│  │  │  ├─controller      控制器目录
+│  │  │  ├─model           模型目录
+│  │  │  └─...            更多类库目录
+│  │  │ 
+│  │  ├─index      前端应用目录
+│  │  │  ├─controller      控制器目录
+│  │  │  └─model           模型目录
+│  │  │ 
+│  │  ├─ view            视图目录
+│  │  │  ├─admin      		后台视图目录
+│  │  │  └─index           前台视图目录
+│  │  └─ ...            更多类库目录
+│  │ 
+│  └─ ...		更多插件
 │
 ├─app
 │  ├─admin      	 后台应用目录
