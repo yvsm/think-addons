@@ -269,6 +269,12 @@ www  WEB部署目录（或者子目录）
 │  │  ├─ view            视图目录
 │  │  │  ├─admin      		后台视图目录
 │  │  │  └─index           前台视图目录
+│  │  │
+│  │  ├─ config.php    	插件设置
+│  │  ├─ install.sql     安装SQL
+│  │  ├─ Plugin.php      插件（包含钩子、安装、卸载、配置等基本方法）
+│  │  ├─ uninstall.sql   卸载SQL
+│  │  │
 │  │  └─ ...            更多类库目录
 │  │ 
 │  └─ ...		更多插件
