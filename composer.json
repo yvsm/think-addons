@@ -1,11 +1,13 @@
 {
     "name": "zunyunkeji/think-addons",
-    "description": "The ThinkPHP6 Addons Package",
+    "description": "基于thinkphp6 开发的插件管理扩展，支持多应用模型",
     "license": "Apache-2.0",
+	"homepage": "https://github.com/yvsm/think-addons",
     "authors": [
         {
             "name": "yvsm",
-            "email": "yvsm@163.com"
+            "email": "yvsm@163.com",
+			"homepage": "https://www.zunyunkeji.com"
         }
     ],
     "require": {

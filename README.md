@@ -1,5 +1,5 @@
 # think-addons
-The ThinkPHP 6 Addons Package
+基于thinkphp6 开发的插件管理扩展，支持多应用模型
 
 ## 安装
 > composer require zunyunkeji/think-addons
