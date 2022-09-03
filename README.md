@@ -69,18 +69,18 @@ namespace addons\test;	// 注意命名空间规范
 use think\Addons;
 
 /**
- * 插件测试
+ * 广告管理
  * @author byron sampson
  */
 class Plugin extends Addons	// 需继承think\Addons类
 {
     // 该插件的基础信息
     public $info = [
-        'name' => 'test',	// 插件标识
-        'title' => '插件测试',	// 插件名称
-        'description' => 'thinkph6插件测试',	// 插件简介
+        'name' => 'adver',	// 插件标识
+        'title' => '广告管理',	// 插件名称
+        'description' => '广告管理插件',	// 插件简介
         'status' => 0,	// 状态
-        'author' => 'byron sampson',
+        'author' => 'yvsm',
         'version' => '0.1'
     ];
 	
@@ -96,6 +96,17 @@ class Plugin extends Addons	// 需继承think\Addons类
 			'sort'		=>	0,
             'icon' 	=> 'fa fa-list',
 			'pid'	=>	262,
+			'menu' => [ 
+				[
+					'href' => 'addons/adver/admin/index/add',
+					'title' => '添加广告',
+					'status' => 1,
+					'target'	=>	'_self',
+					'sort'		=>	0,
+					'icon' 	=> 'fa fa-list',
+					'pid'	=>	262,
+				]
+			]
 		]
 	];
 
