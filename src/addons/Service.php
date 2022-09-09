@@ -80,7 +80,7 @@ class Service extends \think\Service
                             }
                             if($domain){
                                 if (!$rules) $rules = [
-                                    '/' => ['module' => 'frontend','addon' => $val['addons'],'controller' => 'index', 'action' => 'index',
+                                    '/' => ['module' => 'index','addon' => $val['addons'],'controller' => 'index', 'action' => 'index',
                                     ],
                                 ];
                                 //多个域名
@@ -126,7 +126,7 @@ class Service extends \think\Service
     {
         // 加载系统语言包
         Lang::load([
-            $this->app->getRootPath() . '/vendor/fun/fun-addons/src/lang/zh-cn.php'
+            $this->app->getRootPath() . '/vendor/zunyunkeji/think-addons/src/lang/zh-cn.php'
         ]);
         // 加载应用默认语言包
         $this->app->loadLangPack($this->app->lang->defaultLangSet());
@@ -144,14 +144,14 @@ class Service extends \think\Service
                 continue;
             }
             if(!is_dir($this->addons_path . $name)) continue;
-            $module_dir = $this->addons_path . $name . DS;
+            $module_dir = $this->addons_path . $name . DIRECTORY_SEPARATOR;
             foreach (scandir($module_dir) as $mdir) {
                 if (in_array($mdir, ['.', '..'])) {
                     continue;
                 }
                 //路由配置文件
-                if(is_file($this->addons_path . $name . DS . $mdir)) continue;
-                $addons_route_dir = $this->addons_path . $name . DS . $mdir . DS . 'route' . DS;
+                if(is_file($this->addons_path . $name . DIRECTORY_SEPARATOR . $mdir)) continue;
+                $addons_route_dir = $this->addons_path . $name . DIRECTORY_SEPARATOR . $mdir . DIRECTORY_SEPARATOR . 'route' . DIRECTORY_SEPARATOR;
                 if (file_exists($addons_route_dir) && is_dir($addons_route_dir)) {
                     $files = glob($addons_route_dir . '*.php');
                     foreach ($files as $file) {
@@ -208,7 +208,7 @@ class Service extends \think\Service
             if (is_file($this->addons_path . $name)) {
                 continue;
             }
-            $addonDir = $this->addons_path . $name . DS;
+            $addonDir = $this->addons_path . $name . DIRECTORY_SEPARATOR;
             if (!is_dir($addonDir)) {
                 continue;
             }
@@ -240,12 +240,12 @@ class Service extends \think\Service
                 }
 
                 if (in_array($childname, ['vendor'])) {
-                    $autoload_file = $this->addons_path . $name . DS . $childname.DS.'autoload.php';
+                    $autoload_file = $this->addons_path . $name . DIRECTORY_SEPARATOR . $childname.DIRECTORY_SEPARATOR.'autoload.php';
                     if (file_exists($autoload_file)){
                         require_once $autoload_file;
                     }
                 }else{
-                    $module_dir = $this->addons_path . $name . DS . $childname;
+                    $module_dir = $this->addons_path . $name . DIRECTORY_SEPARATOR . $childname;
                     if (is_dir($module_dir)) {
                         foreach (scandir($module_dir) as $mdir) {
                             if (in_array($mdir, ['.', '..'])) {
@@ -254,7 +254,7 @@ class Service extends \think\Service
                             //加载配置
                             $commands = [];
                             //配置文件
-                            $addon_config_dir = $this->addons_path . $name  . DS . 'config' . DS;
+                            $addon_config_dir = $this->addons_path . $name  . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
                             if (is_dir($addon_config_dir)) {
                                 $files = glob($addon_config_dir . '*.php');
                                 foreach ($files as $file) {
@@ -268,7 +268,7 @@ class Service extends \think\Service
                                 }
                             }
                             //配置文件
-                            $module_config_dir = $this->addons_path . $name . DS . $childname . DS . 'config' . DS;
+                            $module_config_dir = $this->addons_path . $name . DIRECTORY_SEPARATOR . $childname . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
                             if (is_dir($module_config_dir)) {
                                 $files = glob($module_config_dir . '*.php');
                                 foreach ($files as $file) {
@@ -312,7 +312,7 @@ class Service extends \think\Service
             if (strtolower($info['filename']) === 'plugin') {
                 // 读取出所有公共方法
                 $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . $info['filename']);
-                $ini= $info['dirname'] .DS. 'Plugin.ini';
+                $ini= $info['dirname'] .DIRECTORY_SEPARATOR. 'Plugin.ini';
                 if (!is_file($ini)) {
                     continue;
                 }
@@ -346,7 +346,7 @@ class Service extends \think\Service
     public function getAddonsPath()
     {
         // 初始化插件目录
-        $addons_path = $this->app->getRootPath() . 'addons' . DS;
+        $addons_path = $this->app->getRootPath() . 'addons' . DIRECTORY_SEPARATOR;
         // 如果插件目录不存在则创建
         if (!is_dir($addons_path)) {
             @mkdir($addons_path, 0755, true);
@@ -376,7 +376,7 @@ class Service extends \think\Service
      */
     public static function getSourceAssetsDir($name)
     {
-        return app()->getRootPath() . 'addons/' . $name . DS . 'public' . DS;
+        return app()->getRootPath() . 'addons/' . $name . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -386,7 +386,7 @@ class Service extends \think\Service
      */
     public static function getDestAssetsDir($name)
     {
-        $assetsDir = app()->getRootPath() . str_replace("/", DS, "public/static/addons/{$name}");
+        $assetsDir = app()->getRootPath() . str_replace("/", DIRECTORY_SEPARATOR, "public/static/addons/{$name}");
         if (!is_dir($assetsDir)) {
             mkdir($assetsDir, 0755, true);
         }
@@ -396,7 +396,7 @@ class Service extends \think\Service
     //获取插件目录
     public static function getAddonsNamePath($name)
     {
-        return app()->getRootPath() . 'addons' . DS . $name . DS;
+        return app()->getRootPath() . 'addons' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -422,7 +422,7 @@ class Service extends \think\Service
         $addonDir = self::getAddonsNamePath($name);
         // 扫描插件目录是否有覆盖的文件
         foreach (self::getCheckDirs() as $k => $name) {
-            $checkDir = app()->getRootPath() . DS . $name . DS;
+            $checkDir = app()->getRootPath() . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR;
             if (!is_dir($checkDir))
                 continue;
             //检测到存在插件外目录

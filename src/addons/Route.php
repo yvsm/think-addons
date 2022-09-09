@@ -35,12 +35,12 @@ class Route
         if (is_file($app->addons->getAddonsPath() . 'provider.php')) {
             $app->bind(include $app->addons->getAddonsPath() . 'provider.php');
         }
-        $module_path  = $app->addons->getAddonsPath() . $addon . DS .$module.DS;
+        $module_path  = $app->addons->getAddonsPath() . $addon . DIRECTORY_SEPARATOR .$module.DIRECTORY_SEPARATOR;
         //注册路由配置
         $addonsRouteConfig = [];
-        if (is_file($module_path. 'config' . DS . 'route.php')) {
-            $addonsRouteConfig = include($module_path. 'config' . DS . 'route.php');
-            $app->config->load($module_path. 'config' . DS . 'route.php', pathinfo($module_path. 'config' . DS . 'route.php', PATHINFO_FILENAME));
+        if (is_file($module_path. 'config' . DIRECTORY_SEPARATOR . 'route.php')) {
+            $addonsRouteConfig = include($module_path. 'config' . DIRECTORY_SEPARATOR . 'route.php');
+            $app->config->load($module_path. 'config' . DIRECTORY_SEPARATOR . 'route.php', pathinfo($module_path. 'config' . DIRECTORY_SEPARATOR . 'route.php', PATHINFO_FILENAME));
         }
         if (isset($addonsRouteConfig['url_route_must']) && $addonsRouteConfig['url_route_must']) {
             throw new HttpException(400, lang("addon {$addon}：已开启强制路由"));
@@ -72,13 +72,13 @@ class Route
         Event::trigger('addon_module_init', $request);
         $class = get_addons_class($addon, 'controller', $controller,$module);
         if (!$class) {
-            throw new HttpException(404, lang('addon controller %s not found', [Str::studly($module.DS.$controller)]));
+            throw new HttpException(404, lang('addon controller %s not found', [Str::studly($module.DIRECTORY_SEPARATOR.$controller)]));
         }
         //加载app配置
         self::loadApp($addon,$module);
         // 重写视图基础路径
         $config = Config::get('view');
-        $config['view_path'] = $app->addons->getAddonsPath() . $addon . DS.$module .DS. 'view' . DS;
+        $config['view_path'] = $app->addons->getAddonsPath() . $addon . DIRECTORY_SEPARATOR.$module .DIRECTORY_SEPARATOR. 'view' . DIRECTORY_SEPARATOR;
         Config::set($config, 'view');
         if (is_file(self::$addons_path . 'app.php')) {
             $addonAppConfig = (require_once (self::$addons_path . 'app.php'));
@@ -129,28 +129,28 @@ class Route
             if (is_file(self::$addons_path. 'event.php')) {
                 self::$app->loadEvent(include self::$addons_path . 'event.php');
             }
-            $module_dir = self::$addons_path.$module.DS.$childname;
+            $module_dir = self::$addons_path.$module.DIRECTORY_SEPARATOR.$childname;
             if(is_dir($module_dir)){
                 foreach (scandir($module_dir) as $mdir) {
                     if (in_array($mdir, ['.', '..'])) {
                         continue;
                     }
-                    if (is_file(self::$addons_path .$module .DS. 'middleware.php')) {
-                        self::$app->middleware->import(include self::$addons_path .$module .DS . 'middleware.php', 'app');
+                    if (is_file(self::$addons_path .$module .DIRECTORY_SEPARATOR. 'middleware.php')) {
+                        self::$app->middleware->import(include self::$addons_path .$module .DIRECTORY_SEPARATOR . 'middleware.php', 'app');
                     }
-                    if (is_file( self::$addons_path .$module . DS . 'common.php')) {
-                        include_once  self::$addons_path .$module . DS. 'common.php';
+                    if (is_file( self::$addons_path .$module . DIRECTORY_SEPARATOR . 'common.php')) {
+                        include_once  self::$addons_path .$module . DIRECTORY_SEPARATOR. 'common.php';
                     }
-                    if (is_file(self::$addons_path .$module . DS. 'provider.php')) {
-                        self::$app->bind(include self::$addons_path .$module . DS. 'provider.php');
+                    if (is_file(self::$addons_path .$module . DIRECTORY_SEPARATOR. 'provider.php')) {
+                        self::$app->bind(include self::$addons_path .$module . DIRECTORY_SEPARATOR. 'provider.php');
                     }
                     //事件
-                    if (is_file(self::$addons_path .$module . DS. 'event.php')) {
-                        self::$app->loadEvent(include self::$addons_path .$module . DS. 'event.php');
+                    if (is_file(self::$addons_path .$module . DIRECTORY_SEPARATOR. 'event.php')) {
+                        self::$app->loadEvent(include self::$addons_path .$module . DIRECTORY_SEPARATOR. 'event.php');
                     }
                     $commands = [];
                     //配置文件
-                    $addons_config_dir = self::$addons_path .$module . DS . 'config' . DS;
+                    $addons_config_dir = self::$addons_path .$module . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
                     if (is_dir($addons_config_dir)) {
                         $files = [];
                         $files = array_merge($files, glob($addons_config_dir . '*' . self::$app->getConfigExt()));
@@ -170,7 +170,7 @@ class Route
                         }
                     }
                     //语言文件
-                    $addons_lang_dir = self::$addons_path .$childname  .DS . 'lang' . DS;
+                    $addons_lang_dir = self::$addons_path .$childname  .DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR;
                     if (is_dir($addons_lang_dir)) {
                         $files = glob($addons_lang_dir . self::$app->lang->defaultLangSet() . '.php');
                         foreach ($files as $file) {

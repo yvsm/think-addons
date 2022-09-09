@@ -157,7 +157,7 @@ if (!function_exists('get_addons_class')) {
      * @param string $class 当前类名
      * @return string
      */
-    function get_addons_class($name, $type = 'hook', $class = null, $module = 'backend')
+    function get_addons_class($name, $type = 'hook', $class = null, $module = 'admin')
     {
         $name = trim($name);
         // 处理多级控制器情况
@@ -211,7 +211,7 @@ if (!function_exists('addons_url')) {
             $action = array_pop($route);
             $addons = isset($url['scheme'])? strtolower($url['scheme']) : (count($route) == 3 ? strtolower($route[0]) : $request->addon);
             $controller = isset($url['host'])?$url['host'] : (array_pop($route) ?: $request->param('controller'));
-            $module = (array_pop($route)) ?: $request->param('module', 'frontend');
+            $module = (array_pop($route)) ?: $request->param('module', 'index');
             $module = lcfirst($module);
             $controller = lcfirst(Str::studly((string)$controller));
             /* 解析URL带的参数 */
@@ -228,7 +228,7 @@ if (!function_exists('addons_url')) {
         $domain = is_bool($domain)?$domain :str_replace(httpType(),'',$domain);
         $suffix = $config && isset($config['suffix']) && $config['suffix']['value'] ? $config['suffix']['value']:$suffix;
         $rewrite = $config && isset($config['rewrite']) && $config['rewrite']['value'] ? $config['rewrite']['value'] : [];
-        if($module==='backend'){
+        if($module==='admin'){
             //后台注册控制器路由
             return Route::buildUrl("@addons/{$addons}/$module/{$controller}/{$action}", $param)->suffix($suffix);
         }
@@ -308,7 +308,7 @@ if (!function_exists('get_addons_list')) {
                     continue;
                 if (is_file($addons_path . $name))
                     continue;
-                $addonDir = $addons_path . $name . DS;
+                $addonDir = $addons_path . $name . DIRECTORY_SEPARATOR;
                 if (!is_dir($addonDir))
                     continue;
                 if (!is_file($addonDir . 'Plugin' . '.php'))
@@ -359,7 +359,7 @@ if (!function_exists('get_addons_autoload_config')) {
             $hooks = array_diff($methods, $base);
             // 循环将钩子方法写入配置中
             foreach ($hooks as $hook) {
-                $hook = Str::studly($hook);
+                // $hook = Str::studly($hook);
                 if (!isset($config['hooks'][$hook])) {
                     $config['hooks'][$hook] = [];
                 }
@@ -470,7 +470,7 @@ if (!function_exists('refreshaddons')) {
         $jsArr = [];
 
         foreach ($addons as $name => $addon) {
-            $jsArrFile = app()->getRootPath() . 'addons' . DS . $name . DS . 'plugin.js';
+            $jsArrFile = app()->getRootPath() . 'addons' . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . 'plugin.js';
             if ($addon['status']  && is_file($jsArrFile)) {
                 $jsArr[] = file_get_contents($jsArrFile);
             }
@@ -485,7 +485,7 @@ if (!function_exists('refreshaddons')) {
  * 网站地址:   http://www.zunyunkeji.com
  * 源码下载:   http://www.wdphp.com
  * ----------------------------------------------------------------------------
- * 许可声明：这是一个开源程序，未经许可不得将本软件的整体或任何部分用于商业用途及再发布。
+ * 许可声明：开源协议  https://mit-license.org 
  * ============================================================================
  * Author: 缘境 (yvsm@zunyunkeji.com) QQ:316430983 
 */
@@ -498,7 +498,7 @@ EOF;
         } else {
             throw new Exception(lang("addons.js File does not have write permission"));
         }
-        $file = app()->getRootPath() . 'config' . DS . 'addons.php';
+        $file = app()->getRootPath() . 'config' . DIRECTORY_SEPARATOR . 'addons.php';
 
         $config = get_addons_autoload_config(true);
         if (!$config['autoload']) return;
@@ -515,7 +515,7 @@ EOF;
  * 网站地址:   http://www.zunyunkeji.com
  * 源码下载:   http://www.wdphp.com
  * ----------------------------------------------------------------------------
- * 许可声明：这是一个开源程序，未经许可不得将本软件的整体或任何部分用于商业用途及再发布。
+ * 许可声明：开源协议  https://mit-license.org 
  * ============================================================================
  * Author: 缘境 (yvsm@zunyunkeji.com) QQ:316430983 
 */\n\n" . "return " . varExport($config) . ";");
