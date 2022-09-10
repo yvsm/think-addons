@@ -94,7 +94,7 @@ if (!function_exists('set_addons_info')) {
         $service = new Service(App::instance()); // 获取service 服务
         $addons_path = $service->getAddonsPath();
         // 插件列表
-        $file = $addons_path . $name . DIRECTORY_SEPARATOR . 'Plugin.ini';
+        $file = $addons_path . $name . DIRECTORY_SEPARATOR . 'plugin.ini';
         $addon = get_addons_instance($name);
         $array = $addon->setInfo($name, $array);
         $array['status'] ? $addon->enabled() : $addon->disabled();
@@ -174,7 +174,7 @@ if (!function_exists('get_addons_class')) {
                 $namespace = '\\addons\\' . $name . '\\' . $module . '\\controller\\' . $class;
                 break;
             default:
-                $namespace = '\\addons\\' . $name . '\\Plugin';
+                $namespace = '\\addons\\' . $name . '\\plugin';
         }
 
         return class_exists($namespace) ? $namespace : '';
@@ -311,7 +311,7 @@ if (!function_exists('get_addons_list')) {
                 $addonDir = $addons_path . $name . DIRECTORY_SEPARATOR;
                 if (!is_dir($addonDir))
                     continue;
-                if (!is_file($addonDir . 'Plugin' . '.php'))
+                if (!is_file($addonDir . 'plugin' . '.php'))
                     continue;
                 $info = get_addons_info($name);
                 if (!isset($info['name']))
@@ -354,7 +354,7 @@ if (!function_exists('get_addons_autoload_config')) {
         foreach ($addons as $name => $addon) {
             if (!$addon['status']) continue;
             // 读取出所有公共方法
-            $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'Plugin');
+            $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'plugin');
             // 跟插件基类方法做比对，得到差异结果
             $hooks = array_diff($methods, $base);
             // 循环将钩子方法写入配置中
@@ -419,7 +419,7 @@ if (!function_exists('get_addons_autoload_config')) {
         foreach ($addons as $name => $addon) {
             if (!$addon['status']) continue;
             // 读取出所有公共方法
-            $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'Plugin');
+            $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'plugin');
             // 跟插件基类方法做比对，得到差异结果
             $hooks = array_diff($methods, $base);
             // 循环将钩子方法写入配置中

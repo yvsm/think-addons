@@ -212,10 +212,10 @@ class Service extends \think\Service
             if (!is_dir($addonDir)) {
                 continue;
             }
-            if (!is_file($addonDir . 'Plugin.php')) {
+            if (!is_file($addonDir . 'plugin.php')) {
                 continue;
             }
-            $ini = $addonDir . 'Plugin.ini';
+            $ini = $addonDir . 'plugin.ini';
             if (!is_file($ini)) {
                 continue;
             }
@@ -312,7 +312,7 @@ class Service extends \think\Service
             if (strtolower($info['filename']) === 'plugin') {
                 // 读取出所有公共方法
                 $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . $info['filename']);
-                $ini= $info['dirname'] .DIRECTORY_SEPARATOR. 'Plugin.ini';
+                $ini= $info['dirname'] .DIRECTORY_SEPARATOR. 'plugin.ini';
                 if (!is_file($ini)) {
                     continue;
                 }
