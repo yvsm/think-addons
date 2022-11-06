@@ -60,7 +60,7 @@ return [
 > 在addons目录中创建test目录
 
 ### 创建钩子实现类
-> 在test目录中创建 Plugin.php 类文件。注意：类文件首字母需大写
+> 在test目录中创建 plugin.php 类文件。注意：类文件首字母需大写
 
 ```php
 <?php
@@ -72,7 +72,7 @@ use think\Addons;
  * 广告管理
  * @author byron sampson
  */
-class Plugin extends Addons	// 需继承think\Addons类
+class plugin extends Addons	// 需继承think\Addons类
 {
     // 该插件的基础信息
     public $info = [
@@ -232,7 +232,7 @@ function hook($event, $params = null, bool $once = false);
 function get_addons_info($name);
 
 /**
- * 获取插件Plugin的单例
+ * 获取插件plugin的单例
  * @param string $name 插件名
  * @return mixed|null
  */
@@ -272,7 +272,7 @@ www  WEB部署目录（或者子目录）
 │  │  │
 │  │  ├─ config.php    	插件设置
 │  │  ├─ install.sql     安装SQL
-│  │  ├─ Plugin.php      插件（包含钩子、安装、卸载、配置等基本方法）
+│  │  ├─ plugin.php      插件（包含钩子、安装、卸载、配置等基本方法）
 │  │  ├─ uninstall.sql   卸载SQL
 │  │  │
 │  │  └─ ...            更多类库目录
