@@ -557,7 +557,7 @@ function is_really_writable($file)
 	{
 		switch (gettype($var)) {
 			case "string":
-				return '\'' . addcslashes($var, "\\\$\"\r\n\t\v\f") . '\'';
+				return '\'' . addcslashes($var, "\\\$\r\n\t\v\f\'") . '\'';
 			case "array":
 				if (count($var) == 0) {
 					return '[]';
