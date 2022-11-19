@@ -353,6 +353,12 @@ if (!function_exists('get_addons_autoload_config')) {
         $domain = [];
         foreach ($addons as $name => $addon) {
             if (!$addon['status']) continue;
+            try {
+                $db_status = \think\facade\Db::name('addon')->where('name',$name)->value('status');
+                if($db_status!=1) continue;
+            } catch (\Exception $e) {}
+
+
             // 读取出所有公共方法
             $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'plugin');
             // 跟插件基类方法做比对，得到差异结果
@@ -392,70 +398,6 @@ if (!function_exists('get_addons_autoload_config')) {
     }
 }
 
-
-/**
- * 获得插件自动加载的配置
- * @param bool $chunk 是否清除手动配置的钩子
- * @return array
- */
-if (!function_exists('get_addons_autoload_config')) {
-
-    function get_addons_autoload_config($chunk = false)
-    {
-        // 读取addons的配置
-        $config = (array)Config::get('addons');
-        if ($chunk) {
-            // 清空手动配置的钩子
-            $config['hooks'] = [];
-        }
-        $route = [];
-        // 读取插件目录及钩子列表
-        $base = get_class_methods("\\think\\Addons");
-        $base = array_merge($base, ['init','initialize','install', 'uninstall', 'enabled', 'disabled']);
-
-        $url_domain_deploy = Config::get('route.url_domain_deploy');
-        $addons = get_addons_list();
-        $domain = [];
-        foreach ($addons as $name => $addon) {
-            if (!$addon['status']) continue;
-            // 读取出所有公共方法
-            $methods = (array)get_class_methods("\\addons\\" . $name . "\\" . 'plugin');
-            // 跟插件基类方法做比对，得到差异结果
-            $hooks = array_diff($methods, $base);
-            // 循环将钩子方法写入配置中
-            foreach ($hooks as $hook) {
-                $hook = Str::studly($hook);
-                if (!isset($config['hooks'][$hook])) {
-                    $config['hooks'][$hook] = [];
-                }
-                // 兼容手动配置项
-                if (is_string($config['hooks'][$hook])) {
-                    $config['hooks'][$hook] = explode(',', $config['hooks'][$hook]);
-                }
-                if (!in_array($name, $config['hooks'][$hook])) {
-                    $config['hooks'][$hook][] = $name;
-                }
-            }
-            $conf = get_addons_config($addon['name']);
-            if ($conf) {
-                $conf['rewrite'] = isset($conf['rewrite']) && is_array($conf['rewrite']) ? $conf['rewrite'] : [];
-                $rule = $conf['rewrite'] ? $conf['rewrite']['value'] : [];
-                if ($url_domain_deploy && isset($conf['domain']) && $conf['domain']) {
-                    $domain[] = [
-                        'addons' => $addon['name'],
-                        'domain' => $conf['domain']['value'],
-                        'rule' => $rule
-                    ];
-                } else {
-                    $route = array_merge($route, $rule);
-                }
-            }
-        }
-        $config['route'] = $route;
-        $config['route'] = array_merge($config['route'], $domain);
-        return $config;
-    }
-}
 /**
  * 刷新插件缓存文件
  *
@@ -465,6 +407,7 @@ if (!function_exists('get_addons_autoload_config')) {
 if (!function_exists('refreshaddons')) {
     function refreshaddons()
     {
+        Cache::delete('addonslist');
         //刷新addons.js
         $addons = get_addons_list();
         $jsArr = [];
@@ -553,27 +496,27 @@ function is_really_writable($file)
  * @return string
  */
  if (!function_exists('varExport')) {
-	function varExport($var, $indent = "", $isCompact = false)
-	{
-		switch (gettype($var)) {
-			case "string":
-				return '\'' . addcslashes($var, "\\\$\r\n\t\v\f\'") . '\'';
-			case "array":
-				if (count($var) == 0) {
-					return '[]';
-				}
-				$newLine = $isCompact ? '' : "\n";
-				$itemSpace = $isCompact ? "$indent " : "$indent    ";
-				$indexed = array_keys($var) === range(0, count($var) - 1);
-				$r = [];
-				foreach ($var as $key => $value) {
-					$r[] = $itemSpace . ($indexed ? "" : varExport($key) . " => ") . varExport($value, $itemSpace);
-				}
-				return "[$newLine" . implode(",$newLine", $r) . "$newLine" . $indent . "]";
-			case "boolean":
-				return $var ? "true" : "false";
-			default:
-				return var_export($var, true);
-		}
-	}
+    function varExport($var, $indent = "", $isCompact = false)
+    {
+        switch (gettype($var)) {
+            case "string":
+                return '\'' . addcslashes($var, "\\\$\r\n\t\v\f\'") . '\'';
+            case "array":
+                if (count($var) == 0) {
+                    return '[]';
+                }
+                $newLine = $isCompact ? '' : "\n";
+                $itemSpace = $isCompact ? "$indent " : "$indent    ";
+                $indexed = array_keys($var) === range(0, count($var) - 1);
+                $r = [];
+                foreach ($var as $key => $value) {
+                    $r[] = $itemSpace . ($indexed ? "" : varExport($key) . " => ") . varExport($value, $itemSpace);
+                }
+                return "[$newLine" . implode(",$newLine", $r) . "$newLine" . $indent . "]";
+            case "boolean":
+                return $var ? "true" : "false";
+            default:
+                return var_export($var, true);
+        }
+    }
 }
