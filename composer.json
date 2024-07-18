@@ -1,6 +1,6 @@
 {
     "name": "zunyunkeji/think-addons",
-    "description": "基于thinkphp6 开发的插件管理扩展，支持多应用模型",
+    "description": "基于 thinkphp6 / thinkphp8 开发的插件管理扩展，支持多应用模型",
     "license": "Apache-2.0",
 	"homepage": "https://github.com/yvsm/think-addons",
     "authors": [
@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "topthink/framework": "^6.0",
-        "topthink/think-view": "^1.0",
+        "php": ">=7.2.0",
+        "topthink/framework": "^6.0 || ^8.0",
+        "topthink/think-view": "^1.0 || ^3.0",
         "topthink/think-helper": "^3.0.0"
     },
     "autoload": {
