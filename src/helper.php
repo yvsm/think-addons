@@ -228,7 +228,7 @@ if (!function_exists('addons_url')) {
         $domain = is_bool($domain)?$domain :str_replace(httpType(),'',$domain);
         $suffix = $config && isset($config['suffix']) && $config['suffix']['value'] ? $config['suffix']['value']:$suffix;
         $rewrite = $config && isset($config['rewrite']) && $config['rewrite']['value'] ? $config['rewrite']['value'] : [];
-        if($module==='admin'){
+        if($module==='admin' || $module==='backend'){
             //后台注册控制器路由
             return Route::buildUrl("@addons/{$addons}/$module/{$controller}/{$action}", $param)->suffix($suffix);
         }
